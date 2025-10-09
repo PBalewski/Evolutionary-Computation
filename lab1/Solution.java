@@ -123,7 +123,7 @@ public class Solution {
                 results.get("randomSolution").add(randomSolution(inst));
             }
 
-            for (int start = 0; start < 5; start++) {
+            for (int start = 0; start < inst.n; start++) {
                 if (start % 20 == 0) System.out.println("Processing start node: " + start);
 
                 results.get("nearestEnd").add(nearestEnd(inst, start));
@@ -167,3 +167,4 @@ public class Solution {
         }
     }
 }
+
