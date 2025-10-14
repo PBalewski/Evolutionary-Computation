@@ -106,7 +106,8 @@ public class Solution {
 
     public static void main(String[] args) {
         try {
-            String filepath = "TSPA.csv";
+            String instance = "TSPB";
+            String filepath = ".\\data\\" + instance + ".csv";
             Classes.Instance inst = Helpers.readCSV(filepath);
             System.out.println("Loaded instance with " + inst.n + " nodes");
 
@@ -159,7 +160,7 @@ public class Solution {
                 System.out.println("Best value: " + best.second);
                 System.out.println("Best path: " + best.first);
 
-                Plotter.showPlot(inst.nodes, best.first, method + " Best Solution");
+                Plotter.showPlot(inst.nodes, best.first, "lab1/visualizations/" + instance + method);
             }
 
         } catch (Exception e) {
