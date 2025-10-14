@@ -79,7 +79,7 @@ public class Plotter extends JPanel {
         frame.setVisible(true);
 
     // Also save automatically when shown
-        savePlotAsImage(panel, title.replaceAll("\\s+", "_") + ".png");
+        savePlotAsImage(panel, title + ".png");
     }
 
     // ---------- Save as image ----------
