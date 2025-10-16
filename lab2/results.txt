@@ -1,0 +1,24 @@
+TSPA:
+NN                  -> min: 71179 max: 75450   avg: 73179   
+NNregretWeight(0.1) -> min: 71179  max: 75450  avg: 72830
+NNregretWeight(0.2) -> min: 71029  max: 75182  avg: 72714
+NNregretWeight(0.3) -> min: 70900  max: 74861  avg: 72462
+NNregretWeight(0.4) -> min: 70155  max: 74610  avg: 72154
+NNregretWeight(0.5) -> min: 70010  max: 75452  avg: 72401
+NNregretWeight(0.6) -> min: 69932  max: 77323  avg: 73001
+NNregretWeight(0.7) -> min: 70566  max: 77704  avg: 73583
+NNregretWeight(0.8) -> min: 72820  max: 79330  avg: 75868
+NNregretWeight(0.9) -> min: 78458  max: 92074  avg: 85369
+regretNN            -> min: 108151  max: 124921  avg: 117138
+
+GC                  -> min: 71488  max: 74410  avg: 72646
+GCregretWeight(0.1) -> min: 71488  max: 74410  avg: 72607
+GCregretWeight(0.2) -> min: 71525  max: 73889  avg: 72451
+GCregretWeight(0.3) -> min: 71163  max: 73759  avg: 72442
+GCregretWeight(0.4) -> min: 71243  max: 74048  avg: 72576
+GCregretWeight(0.5) -> min: 71108  max: 73395  avg: 72130
+GCregretWeight(0.6) -> min: 71052  max: 73724  avg: 71973
+GCregretWeight(0.7) -> min: 70475  max: 75365  avg: 73082
+GCregretWeight(0.8) -> min: 71468  max: 77786  avg: 75471
+GCregretWeight(0.9) -> min: 77625  max: 89847  avg: 82760
+regretGC            -> min: 105692  max: 126951  avg: 115579

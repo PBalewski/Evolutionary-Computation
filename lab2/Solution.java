@@ -3,7 +3,7 @@ import java.util.stream.*;
 
 public class Solution {
 
-    public static Classes.Pair<List<Integer>, Integer> regretNearestAny(Classes.Instance inst, int start, int k) {
+    public static Classes.Pair<List<Integer>, Integer> regretNearestAny(Classes.Instance inst, int start, int k, double regretWeight) {
 
         List<Integer> selected = new ArrayList<>();
         selected.add(start);
@@ -13,7 +13,7 @@ public class Solution {
         while (selected.size() < (inst.n + 1) / 2) {
             int bestNode = -1;
             int bestPos = -1;
-            double bestRegret = Double.NEGATIVE_INFINITY;
+            double bestScore = Double.NEGATIVE_INFINITY;
 
             // Iterate over each remaining node
             for (int j : remaining) {
@@ -49,8 +49,10 @@ public class Solution {
                     regret += (sorted.get(m) - bestDelta);
                 }
 
-                if (regret > bestRegret) {
-                    bestRegret = regret;
+                double score = regretWeight*regret - (1-regretWeight)*bestDelta;
+
+                if (score > bestScore) {
+                    bestScore = score;
                     bestNode = j;
                     bestPos = deltas.indexOf(bestDelta);
                 }
@@ -65,7 +67,7 @@ public class Solution {
         return new Classes.Pair<>(selected, val);
     }
 
-    public static Classes.Pair<List<Integer>, Integer> regretGreedyCycle(Classes.Instance inst, int start, int k) {
+    public static Classes.Pair<List<Integer>, Integer> regretGreedyCycle(Classes.Instance inst, int start, int k, double regretWeight) {
         Set<Integer> remaining = IntStream.range(0, inst.n).boxed().collect(Collectors.toSet());
         remaining.remove(start);
 
@@ -84,9 +86,9 @@ public class Solution {
 
         while (selected.size() < (inst.n + 1) / 2) {
             int bestNode = -1, bestPos = -1;
-            double bestRegret = Double.NEGATIVE_INFINITY;
+            double bestScore = Double.NEGATIVE_INFINITY;
 
-            // evaluate regret for each remaining node
+            // calculate score for each remaining node
             for (int j : remaining) {
                 List<Double> deltas = new ArrayList<>();
 
@@ -108,10 +110,12 @@ public class Solution {
                     regret += (sorted.get(m) - bestDelta);
                 }
 
-                if (regret > bestRegret) {
-                    bestRegret = regret;
+                double score = regretWeight*regret - (1-regretWeight)*bestDelta;
+
+                if (score > bestScore) {
+                    bestScore = score;
                     bestNode = j;
-                    bestPos = deltas.indexOf(bestDelta);
+                    bestPos = deltas.indexOf(bestDelta) + 1; // shift position to get proper edge
                 }
             }
 
@@ -135,14 +139,18 @@ public class Solution {
             System.out.println("Loaded instance with " + inst.n + " nodes");
 
             Map<String, List<Classes.Pair<List<Integer>, Integer>>> results = new LinkedHashMap<>();
-            results.put("regretNearestAny", new ArrayList<>());
-            results.put("regretGreedyCycle", new ArrayList<>());
+            results.put("regretNN", new ArrayList<>());
+            results.put("regretGC", new ArrayList<>());
+            results.put("NNregretWeight(0.5)", new ArrayList<>());
+            results.put("GCregretWeight(0.5)", new ArrayList<>());
 
             for (int start = 0; start < inst.n; start++) {
                 if (start % 20 == 0) System.out.println("Processing start node: " + start);
 
-                results.get("regretNearestAny").add(regretNearestAny(inst, start, 2));
-                results.get("regretGreedyCycle").add(regretGreedyCycle(inst, start, 2));
+                results.get("regretNN").add(regretNearestAny(inst, start, 2, 1));
+                results.get("regretGC").add(regretGreedyCycle(inst, start, 2, 1));
+                results.get("NNregretWeight(0.5)").add(regretNearestAny(inst, start, 2, 0.5));
+                results.get("GCregretWeight(0.5)").add(regretGreedyCycle(inst, start, 2, 0.5));
             }
 
 
@@ -156,7 +164,7 @@ public class Solution {
                 int max = sols.stream().mapToInt(p -> p.second).max().orElse(0);
                 double avg = sols.stream().mapToInt(p -> p.second).average().orElse(0.0);
 
-                System.out.printf("%-15s -> min: %d  max: %d  avg: %.2f%n", name, min, max, avg);
+                System.out.printf("%-15s -> min: %d  max: %d  avg: %.0f%n", name, min, max, avg);
 
                 Classes.Pair<List<Integer>, Integer> best = sols.stream()
                         .min(Comparator.comparingInt(p -> p.second))
