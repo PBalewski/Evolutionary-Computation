@@ -44,4 +44,20 @@ public class Helpers {
         int cost = path.stream().mapToInt(i -> inst.nodes.get(i).cost).sum();
         return dist + cost;
     }
+
+    public static Set<Integer> getRemaining(int n, List<Integer> selected) {
+        Set<Integer> remaining = IntStream.range(0, n).boxed().collect(Collectors.toSet());
+        remaining.removeAll(selected);
+        return remaining;
+    }
+
+    public static <T> void reverseSublist(List<T> list, int from, int to) {
+        int i = from;
+        int j = to;
+        while (i < j) {
+            Collections.swap(list, i, j);
+            i++;
+            j--;
+        }
+    }
 }
