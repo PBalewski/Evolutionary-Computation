@@ -60,4 +60,60 @@ public class Helpers {
             j--;
         }
     }
+
+    // ---- Initializations ----
+    //Random 
+    public static List<Integer> getRandomSolution(Classes.Instance inst, Random rand) {
+        List<Integer> allNodes = IntStream.range(0, inst.n).boxed().collect(Collectors.toList());
+        Collections.shuffle(allNodes, rand);
+        int size = (inst.n + 1) /2;
+        return new ArrayList<>(allNodes.subList(0, size));
+    }
+
+    // ---- Calculating deltas ----
+    // Inter-route Node: switching node from the cycle with the one from outside
+    public static int calculateDeltaInterNode(List<Integer> selected, int i_idx, int k_node, Classes.Instance inst) {
+        int n = selected.size();
+
+        int i_node = selected.get(i_idx);
+        int prev_node = selected.get((i_idx - 1 + n) % n);
+        int next_node = selected.get((i_idx + 1) % n);
+
+        int remove_dist = inst.distMat[prev_node][i_node] + inst.distMat[i_node][next_node];
+        int add_dist = inst.distMat[prev_node][k_node] + inst.distMat[k_node][next_node];
+
+        int remove_cost = inst.nodes.get(i_node).cost;
+        int add_cost = inst.nodes.get(k_node).cost;
+
+        return (add_dist - remove_dist) + (add_cost - remove_cost);
+    }
+
+    //Intra-route Edge: switch 2 edges
+    public static int calculateDeltaIntraEdge(List<Integer> selected, int i_idx, int j_idx, Classes.Instance inst) {
+        int n = selected.size();
+        
+        if (i_idx == j_idx) {return 0;}
+
+        // Ensure i_idx is smaller than j_idx
+        if (i_idx > j_idx) {
+            int temp = i_idx;
+            i_idx = j_idx;
+            j_idx = temp;
+        }
+
+        // Skip adjecent edges
+        if (j_idx == i_idx + 1 || (i_idx == 0 && j_idx == n - 1)) {
+            return 0;
+        }
+
+        int node_i = selected.get(i_idx);
+        int next_i = selected.get(i_idx + 1);
+        int node_j = selected.get(j_idx);
+        int next_j = selected.get((j_idx + 1) % n);
+
+        int remove_dist = inst.distMat[node_i][next_i] + inst.distMat[node_j][next_j];
+        int add_dist = inst.distMat[node_i][node_j] + inst.distMat[next_i][next_j];
+
+        return add_dist - remove_dist;
+    }
 }
