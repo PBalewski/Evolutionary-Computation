@@ -10,4 +10,6 @@ java lab[i]/Solution.java
 ### solution checker
 
 make sure you are in the data folder
+```bash
 python checker.py "TSPA.csv" "1, 2, 3"
+```
