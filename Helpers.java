@@ -116,4 +116,26 @@ public class Helpers {
 
         return add_dist - remove_dist;
     }
+
+    // call after every accepted move to refresh:   
+    public static Map<Integer,Integer> buildSuccMap(List<Integer> cycle) {
+        Map<Integer,Integer> succ = new HashMap<>(cycle.size()*2);
+        int n = cycle.size();
+        for (int i=0;i<n;i++) {
+            succ.put(cycle.get(i), cycle.get((i+1)%n));
+        }
+        return succ;
+    }
+
+    public static int[] buildPosArray(List<Integer> cycle, int nTotal) {
+        int[] pos = new int[nTotal];
+        Arrays.fill(pos, -1);
+        for (int i=0;i<cycle.size(); i++) pos[cycle.get(i)] = i;
+        return pos;
+    }
+
+    // faster hasEdge:
+    public static boolean hasEdge(Map<Integer,Integer> succ, int a, int b) {
+        return succ.getOrDefault(a, -1) == b;
+    }
 }

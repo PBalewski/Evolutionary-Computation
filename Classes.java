@@ -50,4 +50,22 @@ public class Classes {
             this.second = second;
         }
     }
+
+    public static class Move {
+        public String type;      // "inter" or "intra_edge"
+        public int A;        // inter: prev_node, intra_edge: A_node
+        public int B;        // inter: next_node, intra_edge: B_node
+        public int C;        // inter: selected_node, intra_edge: C_node
+        public int D;        // inter: remaining_node, intra_edge: D_node
+        public int delta;
+
+        public Move(String type, int A, int B, int C, int D, int delta) {
+            this.type = type;
+            this.A = A;
+            this.B = B;
+            this.C = C;
+            this.D = D;
+            this.delta = delta;
+        }
+    }
 }
