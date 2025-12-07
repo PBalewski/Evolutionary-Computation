@@ -285,7 +285,7 @@ public class Solution {
     }
 
     //greedy search
-    private static boolean greedySearch(List<Classes.Pair<Integer, Integer>> inter_moves, List<Integer> selected, Set<Integer> remaining, Classes.Instance inst, String move_type, Random rand) {
+    private static boolean greedySearch(List<Integer> selected, Set<Integer> remaining, Classes.Instance inst, String move_type, Random rand) {
         int n = selected.size();
 
         // Create the whole neighbourhood

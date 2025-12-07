@@ -138,4 +138,43 @@ public class Helpers {
     public static boolean hasEdge(Map<Integer,Integer> succ, int a, int b) {
         return succ.getOrDefault(a, -1) == b;
     }
+
+    // similarity measure - nodes
+    public static double similarityNodes(List<Integer> sol1, List<Integer> sol2) {
+        if (sol1.isEmpty() || sol2.isEmpty()) {
+            return 0.0;
+        }
+        Set<Integer> set1 = new HashSet<>(sol1);
+        int common = 0;
+        for (Integer n : sol2) {
+            if (set1.contains(n)) common++;
+        }
+        return (double) common / sol1.size();
+    }
+
+    // similarity measure - edges
+    public static double similarityEdges(List<Integer> sol1, List<Integer> sol2) {
+        if (sol1.isEmpty() || sol2.isEmpty()) {
+            return 0.0;
+        }
+        Set<String> edges1 = new HashSet<>();
+        int n1 = sol1.size();
+        for (int i = 0; i < n1; i++) {
+            int u = sol1.get(i);
+            int v = sol1.get((i + 1) % n1);
+            //  independent from the direction
+            if (u < v) edges1.add(u + "-" + v);
+            else edges1.add(v + "-" + u);
+        }
+
+        int common = 0;
+        int n2 = sol2.size();
+        for (int i = 0; i < n2; i++) {
+            int u = sol2.get(i);
+            int v = sol2.get((i + 1) % n2);
+            String key = (u < v) ? (u + "-" + v) : (v + "-" + u);
+            if (edges1.contains(key)) common++;
+        }
+        return (double) common / n1;
+    }
 }
