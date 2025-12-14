@@ -177,4 +177,73 @@ public class Helpers {
         }
         return (double) common / n1;
     }
+
+    //common set of nodes
+    public static Set<Integer> getCommonNodes(List<Integer> sol1, List<Integer> sol2){
+        Set<Integer> set1 = new HashSet<>(sol1);
+        set1.retainAll(new HashSet<>(sol2)); 
+        return set1;
+    };
+
+    public static Set<String> getEdgesSet(List<Integer> path) {
+        Set<String> edges = new HashSet<>();
+        int n = path.size();
+        for (int i = 0; i < n; i++) {
+            int u = path.get(i);
+            int v = path.get((i + 1) % n);
+            edges.add(u < v ? u + "-" + v : v + "-" + u);
+        }
+        return edges;
+    }
+
+    //common set of edges
+    public static List<List<Integer>> getCommonEdges(List<Integer> baseParent, Set<String> referenceEdges){
+        List<List<Integer>> segments = new ArrayList<>();
+        List<Integer> currentSegment = new ArrayList<>();
+        boolean inSegment = false;
+
+        int n = baseParent.size();
+        for (int i = 0; i < n; i++) {
+            int u = baseParent.get(i);
+            int v = baseParent.get((i + 1) % n);
+            String edge = u < v ? u + "-" + v : v + "-" + u;
+
+            if (referenceEdges.contains(edge)) {
+                if (!inSegment) {
+                    currentSegment = new ArrayList<>();
+                    currentSegment.add(u);
+                    currentSegment.add(v);
+                    segments.add(currentSegment);
+                    inSegment = true;
+                } else {
+                    currentSegment.add(v);
+                }
+            } else {
+                inSegment = false;
+            }
+        }
+        return segments;
+    };
+
+    public static boolean[] getNodePresenceArray(List<Integer> path, int totalNodes) {
+        boolean[] present = new boolean[totalNodes];
+        for (int node : path) {
+            present[node] = true;
+        }
+        return present;
+    };
+
+    // public static boolean[][] getEdgeMatrix(List<Integer> path, int totalNodes) {
+    //     boolean[][] matrix = new boolean[totalNodes][totalNodes];
+    //     int k = path.size();
+    //     for (int i = 0; i < k; i++) {
+    //         int u = path.get(i);
+    //         int v = path.get((i + 1) % k);
+    //         matrix[u][v] = true;
+    //         matrix[v][u] = true;
+    //     }
+    //     return matrix;
+    // };
+
+
 }
